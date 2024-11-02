@@ -10,6 +10,8 @@ set(libName xpro::${PROJECT_NAME})
 if(WIN32)
   install(FILES iconv.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
   install(FILES x64/ReleaseStatic/libiconvStatic.lib DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  file(GLOB dbgFiles x64/DebugStatic/libiconvStaticD.*)
+  install(FILES ${dbgFiles} DESTINATION ${CMAKE_INSTALL_LIBDIR})
   string(JOIN "\n" EXT1
     "get_filename_component(PKG_ROOTDIR \${CMAKE_CURRENT_LIST_DIR}/../.. ABSOLUTE)"
     "get_filename_component(PKG_ROOTDIR \${PKG_ROOTDIR} ABSOLUTE) # remove relative parts"
@@ -19,11 +21,14 @@ if(WIN32)
     "if(NOT TARGET ${libName})"
     "  add_library(${libName} STATIC IMPORTED)"
     "  set(libRelease \${PKG_ROOTDIR}/${CMAKE_INSTALL_LIBDIR}/libiconvStatic${CMAKE_STATIC_LIBRARY_SUFFIX})"
-    "  if(EXISTS \"\${libRelease}\")"
-    "    set_property(TARGET ${libName} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)"
+    "  set(libDebug \${PKG_ROOTDIR}/${CMAKE_INSTALL_LIBDIR}/libiconvStaticD${CMAKE_STATIC_LIBRARY_SUFFIX})"
+    "  if(EXISTS \"\${libRelease}\" AND EXISTS \"\${libDebug}\")"
+    "    set_property(TARGET ${libName} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE DEBUG)"
     "    set_target_properties(${libName} PROPERTIES"
     "      IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE \"C\""
+    "      IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG \"C\""
     "      IMPORTED_LOCATION_RELEASE \"\${libRelease}\""
+    "      IMPORTED_LOCATION_DEBUG \"\${libDebug}\""
     "      INTERFACE_INCLUDE_DIRECTORIES \"\${PKG_ROOTDIR}/${CMAKE_INSTALL_INCLUDEDIR}\""
     "      )"
     "  endif()"
