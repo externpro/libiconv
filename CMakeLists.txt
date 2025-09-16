@@ -38,6 +38,8 @@ else()
   string(JOIN "\n" EXT2
     "if(NOT TARGET ${libName})"
     "  add_library(${libName} INTERFACE IMPORTED)"
+    "  find_package(Iconv REQUIRED)"
+    "  target_link_libraries(${libName} INTERFACE Iconv::Iconv)"
     "endif()"
     ""
     )
