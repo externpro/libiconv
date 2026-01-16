@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.31)
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 project(libiconv VERSION 1.18)
-include(GNUInstallDirs)
-include(xpflags)
-set(XP_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
-set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME devel)
-set(libName xpro::${PROJECT_NAME})
+if(DEFINED XP_NAMESPACE)
+  set(nameSpace ${XP_NAMESPACE}::)
+endif()
+set(libName ${nameSpace}${PROJECT_NAME})
 if(WIN32)
   install(FILES iconv.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
   install(FILES x64/ReleaseStatic/libiconvStatic.lib DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -44,4 +43,11 @@ else()
     ""
     )
 endif()
-xpPackageDevel()
+if(DEFINED XP_NAMESPACE)
+  xpExternPackage(NAMESPACE ${XP_NAMESPACE}
+    LIBRARIES ${PROJECT_NAME} BASE v0 XPDIFF "bin"
+    WEB "https://www.gnu.org/software/libiconv/" UPSTREAM "github.com/pffang/libiconv-for-Windows/releases/tag/1.18-eed6782"
+    DESC "character set conversion library"
+    LICENSE "[LGPL-2.1](https://savannah.gnu.org/projects/libiconv/ 'LGPL version 2.1')"
+    )
+endif()
