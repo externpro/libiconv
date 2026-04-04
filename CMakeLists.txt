@@ -48,6 +48,6 @@ if(DEFINED XP_NAMESPACE)
     LIBRARIES ${PROJECT_NAME} BASE v0 XPDIFF "bin"
     WEB "https://www.gnu.org/software/libiconv/" UPSTREAM "github.com/pffang/libiconv-for-Windows/releases/tag/1.18-eed6782"
     DESC "character set conversion library"
-    LICENSE "[LGPL-2.1](https://savannah.gnu.org/projects/libiconv/ 'LGPL version 2.1')"
+    LICENSE "[LGPL-2.1-or-later](https://savannah.gnu.org/projects/libiconv/ 'GNU Lesser General Public License v2.1 or later')"
     )
 endif()
